@@ -1,5 +1,6 @@
 module Problems where
 import Helper
+import Data.Char
 
 
 p001::Integer
@@ -23,3 +24,76 @@ What is the largest prime factor of the number 600851475143 ? --}
                   
 p003::Integer
 p003 = maximum $ factorise 600851475143
+
+
+{-- A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+
+Find the largest palindrome made from the product of two 3-digit numbers. --}
+
+p004::Integer
+p004 = maximum $ [ x*y | x<-[100..999],y<-[100..999], isPalindrome (x*y)]
+
+
+
+{--2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+
+What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20? --}
+p005 :: Integer
+p005 = foldr lcm 1 [1..20]
+
+{--
+
+The sum of the squares of the first ten natural numbers is,
+12 + 22 + ... + 102 = 385
+
+The square of the sum of the first ten natural numbers is,
+(1 + 2 + ... + 10)2 = 552 = 3025
+
+Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.
+
+Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+--}
+
+p006::Integer
+p006 = sum [x*y| x<-[1..100],y<-[1..100],x/=y]
+
+
+{--
+
+By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+
+What is the 10 001st prime number?
+--}
+p007::Integer
+p007 = last $ take 10001 $ filter isPrime [1..]
+
+
+{--Find the greatest product of five consecutive digits in the 1000-digit number. --}
+
+p008 :: Integer
+p008 =  maximum xs
+  where xs = f $ (map (fromIntegral . digitToInt)  $ filter isDigit xxs)
+        xxs = "731671765313306249192251196744265747423553491949349698352031277450632623957831801698480186947885184385861560789112949495459501737958331952853208805511125406987471585238630507156932909632952274430435576689664895044524452316173185640309871112172238311362229893423380308135336276614282806444486645238749303589072962904915604407723907138105158593079608667017242712188399879790879227492190169972088809377665727333001053367881220235421809751254540594752243525849077116705560136048395864467063244157221553975369781797784617406495514929086256932197846862248283972241375657056057490261407972968652414535100474821663704844031998900088952434506585412275886668811642717147992444292823086346567481391912316282458617866458359124566529476545682848912883142607690042242190226710556263211111093705442175069416589604080719840385096245544436298123098787992724428490918884580156166097919133875499200524063689912560717606058861164671094050775410022569831552000559357297257163626956188267042825248360082325753042075296345"
+        f xxs@(x:xs) | length xxs < 5 = []
+                     | otherwise = product (take 5 xxs) : f xs 
+                                   
+        
+        
+{--
+
+A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
+a2 + b2 = c2
+
+For example, 32 + 42 = 9 + 16 = 25 = 52.
+
+There exists exactly one Pythagorean triplet for which a + b + c = 1000.
+Find the product abc.
+--}
+
+p009::Integer
+p009 = head [a*b*c | a<- [1..250], b <- [1..500] , c<-[3..500],a*a +b*b == c*c ,a< b , b< c, a + b+ c == 1000  ]
+  
+       
+{--The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.Find the sum of all the primes below two million.--}
+p010 :: Integer
+p010 = sum $ filter isPrime [1..2000000]

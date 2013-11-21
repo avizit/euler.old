@@ -8,5 +8,5 @@ import Test.QuickCheck
 main :: IO ()
 main = do
       --mapM_ print  [p001, p002,]
-    print p003
+    print p010
     

@@ -19,3 +19,11 @@ factorise x | x <= 1 = [x]
 prop_factprod :: Integer -> Bool
 prop_factprod x = x == product ( factorise x )
 
+isPalindrome :: Integer -> Bool
+isPalindrome x = show x == reverse (show x)
+
+isPrime :: Integer -> Bool
+isPrime 1 = False
+isPrime 2 = True
+isPrime x = null $ filter (\y -> x `mod` y == 0 ) [2..z]
+  where z = floor (sqrt (fromIntegral x))
