@@ -1,7 +1,7 @@
 module Problems where
 import Helper
 import Data.Char
-
+import Data.Array
 
 p001::Integer
 p001 = sum $ filter divides35 [1..1000]
@@ -97,3 +97,33 @@ p009 = head [a*b*c | a<- [1..250], b <- [1..500] , c<-[3..500],a*a +b*b == c*c ,
 {--The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.Find the sum of all the primes below two million.--}
 p010 :: Integer
 p010 = sum $ filter isPrime [1..2000000]
+
+
+{--What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid? --}
+calcMax :: Array (Int,Int) Int -> (Int,Int) -> Int
+calcMax arr (x,y) = maximum [a,b,c,d] -- l2r , u2d , d1,d2
+  where a = if y <= ymax - 3
+            then arr!(x,y) * arr!(x,y+1) * arr!(x,y+2) * arr!(x,y+3)
+            else 0
+        b = if x <= xmax -3
+            then arr!(x,y) * arr!(x+1,y) * arr!(x+2,y) * arr!(x+3,y)
+            else 0
+        c = if x <= xmax -3 && y <= ymax -3 
+            then arr!(x,y) * arr!(x+1,y+1) * arr!(x+2,y+2) * arr!(x+3,y+3)
+            else 0
+        d = if x > 3 && y < ymax -3 
+            then arr!(x,y) * arr!(x-1,y+1) * arr!(x-2,y+2) * arr!(x-3,y+3)
+            else 0
+        xmax = 20
+        ymax = 20
+
+p011 :: IO Int
+p011 = do 
+  input  <- (readFile "11.txt")
+  let xs = (map read $ words input)::[Int]
+  let myR =  ((1,1),(20,20))
+  --print $ sum xs
+  let myarr = array myR  (zipWith (,) (range myR) xs )
+  let pps = map (\x -> calcMax myarr x ) (range ((1,1),(20,20)))
+  return $ maximum pps
+  
